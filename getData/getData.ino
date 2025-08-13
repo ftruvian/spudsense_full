@@ -53,12 +53,12 @@ void loop()
   float objectTemp = sensor.getObjectTempCelsius();
 
   // print measured data in Celsius
-  Serial.print("Ambient celsius : "); Serial.print(ambientTemp); Serial.println(" °C");
-  Serial.print("Object celsius : ");  Serial.print(objectTemp);  Serial.println(" °C");
+  Serial.print(ambientTemp); Serial.println(",");
+  Serial.print(objectTemp);
 
   // print measured data in Fahrenheit
-  Serial.print("Ambient fahrenheit : "); Serial.print(ambientTemp*9/5 + 32); Serial.println(" F");
-  Serial.print("Object fahrenheit : ");  Serial.print(objectTemp*9/5 + 32);  Serial.println(" F");
+  // Serial.print("Ambient fahrenheit : "); Serial.print(ambientTemp*9/5 + 32); Serial.println(" F");
+  // Serial.print("Object fahrenheit : ");  Serial.print(objectTemp*9/5 + 32);  Serial.println(" F");
 
   Serial.println();
   delay(5000);
