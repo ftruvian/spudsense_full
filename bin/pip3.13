@@ -1,4 +1,4 @@
-#!/mnt/drive1tb/joe/projects/spudsense_full/bin/python
+#!/mnt/1tb/joe/projects/spudsense_full/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

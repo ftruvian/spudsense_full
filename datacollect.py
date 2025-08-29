@@ -6,8 +6,8 @@ from datetime import datetime
 # Replace with your Arduino's serial port
 SERIAL_PORT = '/dev/ttyUSB0'  # Linux
 # SERIAL_PORT = 'COM3'        # Windows
-BAUD_RATE = 115200
-CSV_FILE = 'temperature_log.csv'
+BAUD_RATE = 9600
+CSV_FILE = 'data_log.csv'
 
 try:
     # Open serial connection
@@ -20,7 +20,7 @@ try:
 
         # Write header only if file is empty
         if file.tell() == 0:
-            writer.writerow(['Timestamp', 'Ambient Temp (°C)', 'Object Temp (°C)'])
+            writer.writerow(['Timestamp', 'Ambient Temp (°C)', 'Object Temp (°C)',])
 
         print("Logging data to", CSV_FILE)
         
