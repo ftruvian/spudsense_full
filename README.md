@@ -7,7 +7,8 @@
     
 >## B. SETUP PYTHON ENVIRONMENT  
 
- >> 1. python3 -m venv .  
+ >> 1. python3 -m venv .
+ >> 2. source bin/activate
     
 >## C. INSTALL PYTHON DEPENDENCIES  
 
