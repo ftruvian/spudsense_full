@@ -1,4 +1,4 @@
-#!/mnt/drive1tb/joe/projects/spudsense_full/bin/python
+#!/mnt/1tb/joe/projects/spudsense_full/bin/python3
 import sys
 from serial.tools.list_ports import main
 if __name__ == '__main__':
