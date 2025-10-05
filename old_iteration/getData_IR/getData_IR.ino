@@ -1,74 +1,72 @@
-/*!
- * @file        getData.ino
- * @brief       this demo demonstrates how to put the sensor enter/exit sleep mode and get temperature data measured by sensor
- * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
- * @license     The MIT License (MIT)
- * @author      [qsjhyy](yihuan.huang@dfrobot.com)
- * @version     V1.0
- * @date        2021-08-09
- * @url         https://github.com/DFRobot/DFRobot_MLX90614
- */
-#include <Wire.h>
 #include <DFRobot_MLX90614.h>
+#include <Wire.h> // Required for I2C communication (used by MLX90614)
 
-DFRobot_MLX90614_I2C sensor;   // instantiate an object to drive our sensor
+// --- Pin Definitions ---
+const int MOISTURE_SENSOR_PIN = A0; // Analog pin connected to the soil moisture sensor
 
-const int soilPins[] = {A0, A1, A2, A3};  // 4 soil moisture sensors
-const int numSensors = sizeof(soilPins) / sizeof(soilPins[0]);
-int currentSensor = 0;
+// --- Sensor Calibration Values ---
+// Raw ADC reading for 0% moisture (driest)
+const int MOISTURE_DRY_VALUE = 767;
+// Raw ADC reading for 100% moisture (wettest)
+const int MOISTURE_WET_VALUE = 463;
 
-void setup()
-{
+// --- Sensor Objects ---
+// Create an instance of the MLX90614 sensor
+// Default I2C address is 0x5A
+DFRobot_MLX90614_I2C mlx; 
+
+// --- Timing ---
+const long INTERVAL = 2000; // Time in milliseconds between readings (2 seconds)
+unsigned long previousMillis = 0; // Will store the last time the data was sent
+
+void setup() {
+  // Initialize Serial communication at 9600 baud rate
   Serial.begin(9600);
-  
-  // initialize the sensor
-  while( NO_ERR != sensor.begin() ){
-    Serial.println("Communication with device failed, please check connection");
-    delay(3000);
+  while (!Serial) {
+    ; // Wait for serial port to connect. Needed for native USB port boards
   }
-  Serial.println("Begin ok!");
-
-  /** adjust sensor sleep mode select to enter or exit sleep mode, it's enter sleep mode by default
-   *  true is to enter sleep mode
-   *  false is to exit sleep mode (automatically exit sleep mode after power down and restart) */
-  sensor.enterSleepMode();
-  delay(50);
-  sensor.enterSleepMode(false);
-  delay(200);
+  
+  // Initialize I2C communication and the MLX90614 sensor
+  Wire.begin();
+  mlx.begin();
+  
+  Serial.println("Soil Moisture (%),Object Temp (C)"); // Print header for CSV
 }
 
-void loop()
-{
-  // soil moisture sensors
-  int moisture1 = analogRead(soilPins[currentSensor]);
+void loop() {
+  unsigned long currentMillis = millis();
 
-  // moisture percentage
-  float moistper1 = (moisture1 / 300) * 100;
+  // Check if the defined interval has passed
+  if (currentMillis - previousMillis >= INTERVAL) {
+    previousMillis = currentMillis;
 
-  /**
-   * get ambient temperature, unit is Celsius
-   * return value range： -40.01 °C ~ 85 °C
-   */
-  float ambientTemp = sensor.getAmbientTempCelsius();
+    // 1. Read Soil Moisture Sensor
+    int rawMoisture = analogRead(MOISTURE_SENSOR_PIN);
+    
+    // 2. Convert Raw Moisture to Percentage
+    // The map function can be used for linear conversion:
+    // map(value, fromLow, fromHigh, toLow, toHigh)
+    // Here, 767 -> 0 and 463 -> 100
+    long moisturePercentage = map(rawMoisture, MOISTURE_DRY_VALUE, MOISTURE_WET_VALUE, 0, 100);
+    
+    // Clamp the percentage to be between 0 and 100 in case readings go out of range
+    if (moisturePercentage < 0) {
+      moisturePercentage = 0;
+    } else if (moisturePercentage > 100) {
+      moisturePercentage = 100;
+    }
 
-  /**
-   * get temperature of object 1, unit is Celsius
-   * return value range： 
-   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
-   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
-   */
-  float objectTemp = sensor.getObjectTempCelsius();
+    // 3. Read MLX90614 Object Temperature
+    // Read the object temperature in Celsius
+    int sensorValue = analogRead(A0);
+    float ambientTemp = sensor.getAmbientTempCelsius();
+    float objectTemp = sensor.getObjectTempCelsius();
 
-  // print measured data in Celsius
-  Serial.print(ambientTemp); Serial.print(",");
-  Serial.print(objectTemp); Serial.print(",");
-
-  // print soil moisture
-  Serial.println(moisture1);
-
-  // print measured data in Fahrenheit
-  // Serial.print("Ambient fahrenheit : "); Serial.print(ambientTemp*9/5 + 32); Serial.println(" F");
-  // Serial.print("Object fahrenheit : ");  Serial.print(objectTemp*9/5 + 32);  Serial.println(" F");
-  delay(5000);
+    // 4. Send Data to Raspberry Pi via Serial Port (in CSV format)
+    // The format will be: <Moisture Percentage>,<Object Temperature C>
+    Serial.print(sens);
+    Serial.print(",");
+    Serial.print(ambientTemp, 2);
+    Serial.println(objectTemp, 2); // Print temperature with 2 decimal places
+  }
 }
-
