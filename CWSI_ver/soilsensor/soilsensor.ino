@@ -9,7 +9,7 @@ const long BAUD_RATE = 9600;
 float mapToMoisture(int analogValue) {
   // NOTE: Calibrate these values for your specific sensor!
   // Example: 0 (dry) maps to 0%, 600 (wet) maps to 100%.
-  long mappedValue = map(analogValue, 0, 600, 0, 1000); 
+  long mappedValue = map(analogValue, 767, 463, 0, 100); 
   
   if (mappedValue < 0) mappedValue = 0;
   if (mappedValue > 1000) mappedValue = 1000;
@@ -29,8 +29,6 @@ void setup() {
   pinMode(A3, INPUT);
   pinMode(A4, INPUT);
   pinMode(A5, INPUT);
-  
-  Serial.println("Soil Moisture Board Ready. Send A, B, C, D, or E.");
 }
 
 void loop() {
@@ -48,11 +46,11 @@ void loop() {
     
     // 1. Determine which soil moisture sensor pin was requested
     switch (sensorID) {
-      case 'A': pinToRead = A1; break;
-      case 'B': pinToRead = A2; break;
-      case 'C': pinToRead = A3; break;
-      case 'D': pinToRead = A4; break;
-      case 'E': pinToRead = A5; break;
+      case 'A': pinToRead = A0; break;
+      case 'B': pinToRead = A1; break;
+      case 'C': pinToRead = A2; break;
+      case 'D': pinToRead = A3; break;
+      case 'E': pinToRead = A4; break;
       default:
         Serial.print("ERROR: Unknown command received: ");
         Serial.println(command);
@@ -74,6 +72,6 @@ void loop() {
     Serial.print("-> Command ");
     Serial.print(sensorID);
     Serial.print(": Sent moisture value ");
-    Serial.println(moisturePercent, 2);
+    Serial.println(analogReading);
   }
 }

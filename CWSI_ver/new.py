@@ -7,8 +7,11 @@ from typing import List, Optional
 
 # --- Configuration ---
 # NOTE: VERIFY THESE PORTS ARE CORRECT FOR YOUR THREE ARDUINO BOARDS
-MOISTURE_PORT = '/dev/ttyUSB0'  # Port for the Arduino with soil sensors
-IR_PORT = '/dev/ttyUSB1'        # Port for the Arduino with IR sensor
+
+start = time.time()
+
+MOISTURE_PORT = '/dev/ttyUSB1'  # Port for the Arduino with soil sensors
+IR_PORT = '/dev/ttyUSB0'        # Port for the Arduino with IR sensor
 PUMP_PORT = '/dev/ttyUSB2'      # Port for the Arduino with pumps/relays
 MOTOR_PORT = '/dev/ttyUSB3'     # Port for the Arduino with motor controller
 BAUD_RATE = 9600
@@ -293,3 +296,4 @@ if __name__ == "__main__":
     initialize_csv()
     communicate_with_devices()
 
+print("--- %s seconds ---" % (time.time() - start))

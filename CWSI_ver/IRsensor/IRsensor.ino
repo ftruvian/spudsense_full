@@ -21,11 +21,6 @@ void setup()
   if (!sensor.begin()) {
     Serial.println("Error connecting to MLX90614 sensor. Check wiring.");
   } 
-  else {
-    Serial.println("MLX90614 sensor found.");
-  }
-  
-  Serial.println("IR Temperature Board Ready. Send any command to read temps.");
 }
 
 void loop()
