@@ -1,0 +1,34 @@
+# high drougt
+Begin ok!
+14,26.71,25.37
+14,26.71,25.41
+# medium high dought
+Begin ok!
+14,27.47,29.59
+14,27.45,29.43
+#normal
+Begin ok!
+17,27.83,26.27
+17,27.83,26.11
+#overwatered
+Begin ok!
+17,27.85,26.29
+17,27.87,25.85
+17,27.83,25.93
+18,27.85,26.55
+# highly overwatered
+Begin ok!
+17,27.87,25.67
+17,27.89,25.63
+
+Extra
+# watered daily
+15,27.93,25.87
+15,27.91,25.79
+# watered daily
+18,28.09,25.99
+18,28.07,25.81
+# watered daily
+16,28.03,26.03
+17,27.99,25.99
+
