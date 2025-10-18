@@ -19,6 +19,8 @@ except ImportError:
     print("On RPi, run: pip install picamera2 numpy joblib")
     
 
+start = time.time()
+
 # --- Configuration ---
 # NOTE: VERIFY THESE PORTS ARE CORRECT FOR YOUR THREE ARDUINO BOARDS
 MOISTURE_PORT = '/dev/ttyUSB0'  # Port for the Arduino with soil sensors
@@ -404,3 +406,4 @@ if __name__ == "__main__":
     else:
         print("\nScript terminated because ML models failed to load.")
 
+print("--- %s seconds -----" % (time.time() - start))
