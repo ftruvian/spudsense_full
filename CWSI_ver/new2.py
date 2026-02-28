@@ -165,7 +165,7 @@ def send_motor_command(port: str, baud: int) -> bool:
     """
     Sends the 'M' command to the motor control Arduino to trigger movement.
     """
-    motor_command = 'M'
+    #motor_command = 'M'
     print(f"   Sending motor command: {motor_command}")
     
     ser = None
@@ -174,7 +174,7 @@ def send_motor_command(port: str, baud: int) -> bool:
         time.sleep(RESET_DELAY) 
         
         # Send the 'M' command followed by a newline
-        command_bytes = (motor_command + '\n').encode('utf-8')
+        command_bytes = ('M\n').encode('utf-8')
         ser.write(command_bytes)
         
         # Read back confirmation from motor board (optional but helpful for debug)
